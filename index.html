@@ -69,6 +69,12 @@
         .lenis.lenis-stopped { overflow: hidden; }
         .lenis.lenis-scrolling iframe { pointer-events: none; }
 
+        #privacy-modal-content {
+            -webkit-overflow-scrolling: touch !important;
+            touch-action: pan-y !important;
+            overscroll-behavior: contain !important;
+        }
+
         body {
             background-color: #F9F6F0;
             color: #2A2825;
@@ -361,12 +367,6 @@
             opacity: 1;
             transform: translateX(0);
         }
-        .mobile-menu.open a:nth-child(1) { transition-delay: 0.1s; }
-        .mobile-menu.open a:nth-child(2) { transition-delay: 0.15s; }
-        .mobile-menu.open a:nth-child(3) { transition-delay: 0.2s; }
-        .mobile-menu.open a:nth-child(4) { transition-delay: 0.25s; }
-        .mobile-menu.open a:nth-child(5) { transition-delay: 0.3s; }
-        .mobile-menu.open div { transition-delay: 0.4s; }
 
         .nav-link.active {
             color: #ECD6AC !important;
@@ -397,6 +397,74 @@
                 transition-duration: 0.01ms !important;
             }
         }
+
+        /* Dropdown nav */
+        .nav-dropdown {
+            position: relative;
+        }
+        .nav-dropdown-trigger {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            color: #ffffff;
+            font-size: 0.75rem;
+            font-weight: 500;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: color 0.3s ease;
+            background: none;
+            border: none;
+            padding: 0;
+        }
+        .nav-dropdown-trigger:hover,
+        .nav-dropdown:hover .nav-dropdown-trigger {
+            color: #ECD6AC;
+        }
+        .nav-dropdown-trigger svg {
+            transition: transform 0.3s ease;
+        }
+        .nav-dropdown:hover .nav-dropdown-trigger svg {
+            transform: rotate(180deg);
+        }
+        .nav-dropdown-menu {
+            position: absolute;
+            top: calc(100% + 14px);
+            left: 50%;
+            transform: translateX(-50%);
+            min-width: 200px;
+            background: rgba(18, 17, 16, 0.92);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(236, 214, 172, 0.2);
+            border-radius: 1rem;
+            padding: 0.5rem;
+            opacity: 0;
+            pointer-events: none;
+            transform: translateX(-50%) translateY(-6px);
+            transition: opacity 0.25s ease, transform 0.25s ease;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+        }
+        .nav-dropdown:hover .nav-dropdown-menu {
+            opacity: 1;
+            pointer-events: auto;
+            transform: translateX(-50%) translateY(0);
+        }
+        .nav-dropdown-menu a {
+            display: block;
+            padding: 0.6rem 1rem;
+            font-size: 0.7rem;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: rgba(255,255,255,0.75) !important;
+            border-radius: 0.6rem;
+            transition: background 0.2s ease, color 0.2s ease !important;
+            white-space: nowrap;
+        }
+        .nav-dropdown-menu a:hover {
+            background: rgba(209, 173, 109, 0.15);
+            color: #ECD6AC !important;
+        }
     </style>
 </head>
 <body class="antialiased font-sans selection:bg-gold selection:text-white">
@@ -420,11 +488,12 @@
         <div class="hidden md:flex gap-6 lg:gap-8 text-xs font-medium tracking-[0.2em] uppercase">
             <a href="#about" class="nav-link hover:text-gold transition-colors hover-trigger">About</a>
             <a href="#head-spa" class="nav-link hover:text-gold transition-colors hover-trigger">Head Spa</a>
+            <a href="#add-ons" class="nav-link hover:text-gold transition-colors hover-trigger">Add-ons</a>
             <a href="#facials" class="nav-link hover:text-gold transition-colors hover-trigger">Facials</a>
             <a href="#permanent-makeup" class="nav-link hover:text-gold transition-colors hover-trigger">PMU</a>
             <a href="#lash-brows" class="nav-link hover:text-gold transition-colors hover-trigger">Lash & Brows</a>
-            <a href="#add-ons" class="nav-link hover:text-gold transition-colors hover-trigger">Add-ons</a>
-            <a href="#offer" class="nav-link hover:text-gold transition-colors hover-trigger">Offer</a>
+            <a href="#safety" class="nav-link hover:text-gold transition-colors hover-trigger">Safety</a>
+            <a href="#prepare" class="nav-link hover:text-gold transition-colors hover-trigger">Prepare</a>
             <a href="#gallery" class="nav-link hover:text-gold transition-colors hover-trigger">Gallery</a>
             <a href="#contact" class="nav-link hover:text-gold transition-colors hover-trigger">Contact</a>
         </div>
@@ -440,16 +509,17 @@
     </nav>
 
     <div class="mobile-menu fixed inset-0 z-[9997] bg-ink/95 backdrop-blur-md flex flex-col items-center justify-center gap-5" id="mobile-menu">
-        <a href="#about" class="font-serif text-2xl text-sand-100 hover:text-gold transition-colors mobile-link">About</a>
-        <a href="#head-spa" class="font-serif text-2xl text-sand-100 hover:text-gold transition-colors mobile-link">Head Spa</a>
-        <a href="#facials" class="font-serif text-2xl text-sand-100 hover:text-gold transition-colors mobile-link">Facials</a>
-        <a href="#permanent-makeup" class="font-serif text-2xl text-sand-100 hover:text-gold transition-colors mobile-link">Permanent Makeup</a>
-        <a href="#lash-brows" class="font-serif text-2xl text-sand-100 hover:text-gold transition-colors mobile-link">Lash & Brows</a>
-        <a href="#add-ons" class="font-serif text-2xl text-sand-100 hover:text-gold transition-colors mobile-link">Add-ons</a>
-        <a href="#offer" class="font-serif text-2xl text-sand-100 hover:text-gold transition-colors mobile-link">Special Offer</a>
-        <a href="#gallery" class="font-serif text-2xl text-sand-100 hover:text-gold transition-colors mobile-link">Gallery</a>
-        <a href="#contact" class="font-serif text-2xl text-sand-100 hover:text-gold transition-colors mobile-link">Contact</a>
-        <div class="mt-4">
+        <a href="#about" class="font-serif text-2xl text-sand-100 hover:text-gold transition-colors mobile-link" style="transition-delay:0.10s">About</a>
+        <a href="#head-spa" class="font-serif text-2xl text-sand-100 hover:text-gold transition-colors mobile-link" style="transition-delay:0.15s">Head Spa</a>
+        <a href="#add-ons" class="font-serif text-2xl text-sand-100 hover:text-gold transition-colors mobile-link" style="transition-delay:0.20s">Add-ons</a>
+        <a href="#facials" class="font-serif text-2xl text-sand-100 hover:text-gold transition-colors mobile-link" style="transition-delay:0.25s">Facials</a>
+        <a href="#permanent-makeup" class="font-serif text-2xl text-sand-100 hover:text-gold transition-colors mobile-link" style="transition-delay:0.30s">Permanent Makeup</a>
+        <a href="#lash-brows" class="font-serif text-2xl text-sand-100 hover:text-gold transition-colors mobile-link" style="transition-delay:0.35s">Lash & Brows</a>
+        <a href="#safety" class="font-serif text-2xl text-sand-100 hover:text-gold transition-colors mobile-link" style="transition-delay:0.40s">Safety</a>
+        <a href="#prepare" class="font-serif text-2xl text-sand-100 hover:text-gold transition-colors mobile-link" style="transition-delay:0.45s">Prepare</a>
+        <a href="#gallery" class="font-serif text-2xl text-sand-100 hover:text-gold transition-colors mobile-link" style="transition-delay:0.50s">Gallery</a>
+        <a href="#contact" class="font-serif text-2xl text-sand-100 hover:text-gold transition-colors mobile-link" style="transition-delay:0.50s">Contact</a>
+        <div class="mt-4" style="transition-delay:0.55s">
             <a href="https://www.fresha.com/en-GB/a/haus-head-spa-boca-raton-10075-yamato-road-ste-1-eu8gwt1l/all-offer?menu=true&amp;share=true&amp;pId=1228535" target="_blank" rel="noopener noreferrer" class="mobile-book-btn inline-block border border-gold text-gold px-8 py-3 text-xs tracking-[0.2em] uppercase hover:bg-gold hover:text-ink transition-all duration-300 mobile-link">Book Now</a>
         </div>
     </div>
@@ -466,8 +536,8 @@
                 <span class="inline-flex items-center gap-2 rounded-full border border-gold/40 bg-gold/10 px-4 py-1.5 text-xs uppercase tracking-[0.2em] text-gold mb-6 reveal-text">
                     ✦ Luxury Head Spa Treatments ✦
                 </span>
-                <h1 class="font-serif text-5xl sm:text-7xl md:text-8xl lg:text-9xl tracking-tight leading-none mb-6 reveal-text">
-                    <span class="hero-text">Beyond a Treatment,</span><br>
+                <h1 class="font-serif text-4xl sm:text-6xl md:text-8xl lg:text-9xl tracking-tight leading-[1.1] pt-6 pb-2 -mt-6 mb-6 reveal-text">
+                    <span class="hero-text whitespace-nowrap">Beyond a Treatment</span><br>
                     <span class="hero-text italic text-gold-light">a Ritual.</span>
                 </h1>
                 <p class="text-sand-200 text-sm sm:text-base md:text-lg max-w-2xl mx-auto font-light leading-relaxed mb-8 reveal-text">
@@ -482,18 +552,18 @@
                     </a>
                 </div>
                 
-                <div class="grid grid-cols-3 gap-6 sm:gap-12 border-t border-sand-100/15 pt-6 text-center w-full max-w-xl gs-reveal">
-                    <div>
+                <div class="grid grid-cols-3 gap-2 sm:gap-8 md:gap-12 border-t border-sand-100/15 pt-6 text-center w-full max-w-xl gs-reveal">
+                    <div class="px-1 sm:px-2">
                         <div class="font-serif text-2xl sm:text-3xl text-gold-light font-normal">7000+</div>
-                        <div class="text-[10px] sm:text-xs uppercase tracking-widest text-sand-300 mt-1">Happy Guests</div>
+                        <div class="text-[9px] sm:text-xs uppercase tracking-wider sm:tracking-widest text-sand-300 mt-1 whitespace-nowrap">Happy Guests</div>
                     </div>
-                    <div class="border-x border-sand-100/15">
+                    <div class="border-x border-sand-100/15 px-2 sm:px-4">
                         <div class="font-serif text-2xl sm:text-3xl text-gold-light font-normal">4.9★</div>
-                        <div class="text-[10px] sm:text-xs uppercase tracking-widest text-sand-300 mt-1">Google Review</div>
+                        <div class="text-[9px] sm:text-xs uppercase tracking-wider sm:tracking-widest text-sand-300 mt-1 whitespace-nowrap">Google Review</div>
                     </div>
-                    <div>
+                    <div class="px-1 sm:px-2">
                         <div class="font-serif text-2xl sm:text-3xl text-gold-light font-normal">115 min</div>
-                        <div class="text-[10px] sm:text-xs uppercase tracking-widest text-sand-300 mt-1">Signature Ritual</div>
+                        <div class="text-[9px] sm:text-xs uppercase tracking-wider sm:tracking-widest text-sand-300 mt-1 whitespace-nowrap">Signature Ritual</div>
                     </div>
                 </div>
             </div>
@@ -780,6 +850,67 @@
                     <p class="text-xs tracking-[0.2em] uppercase text-ink-light bg-white/70 inline-block px-8 py-4 rounded-full border border-gold/30 shadow-sm">
                         ✦ All services, besides Express Head Spa, include 15 minutes for blow dry (no styling) and scalp analysis ✦
                     </p>
+                </div>
+            </div>
+        </section>
+
+        <section id="add-ons" class="py-32 md:py-48 bg-sand-100 relative overflow-hidden">
+            <div class="max-w-7xl mx-auto px-6 md:px-12 lg:px-24">
+                
+                <div class="flex flex-col md:flex-row justify-between items-start md:items-end mb-20 border-b border-ink/10 pb-8 gs-reveal">
+                    <div>
+                        <div class="flex items-center gap-3 mb-3">
+                            <span class="h-[1px] w-8 bg-gold"></span>
+                            <span class="text-xs tracking-[0.25em] uppercase text-gold font-medium">Enhance Your Journey</span>
+                        </div>
+                        <h2 class="font-serif text-5xl sm:text-7xl lg:text-8xl text-ink leading-tight">Curated <span class="italic text-gold">Add-ons</span></h2>
+                    </div>
+                    <p class="text-xs tracking-[0.2em] uppercase text-ink-light mt-4 md:mt-0 max-w-xs text-right hidden md:block">Targeted therapies to enrich your head spa ritual</p>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start mb-16">
+                    
+                    <article class="lg:col-span-6 service-card p-8 sm:p-12 rounded-[2.5rem] relative overflow-hidden gs-reveal hover-trigger border border-gold/30 shadow-lg">
+                        <div class="flex items-start justify-between gap-4 mb-6">
+                            <div>
+                                <span class="text-[10px] uppercase tracking-[0.25em] text-gold font-semibold mb-2 block">01 / Heated Therapy</span>
+                                <h3 class="service-card-title font-serif text-3xl sm:text-4xl text-ink leading-tight">Neck &amp; Shoulder Hot Stone Massage</h3>
+                                <div class="mt-2 inline-flex items-center gap-2 rounded-full bg-gold/15 px-3 py-1 text-xs uppercase tracking-widest text-gold font-medium">+20 min</div>
+                            </div>
+                            <div class="shrink-0 text-right">
+                                <span class="price-tag font-serif text-4xl sm:text-5xl font-normal text-gold">$50.00</span>
+                            </div>
+                        </div>
+                        <div class="section-divider mx-0 my-6"></div>
+                        <p class="text-sm sm:text-base text-ink-light font-light leading-relaxed">
+                            A targeted massage that uses warm basalt stones to melt deep tension in the neck and shoulders. The soothing mineral heat eases tight muscles, dramatically improves local circulation, and delivers deep, relaxing relief in minutes.
+                        </p>
+                    </article>
+
+                    <article class="lg:col-span-6 lg:mt-16 service-card p-8 sm:p-12 rounded-[2.5rem] relative overflow-hidden gs-reveal hover-trigger border border-ink/10 shadow-lg">
+                        <div class="flex items-start justify-between gap-4 mb-6">
+                            <div>
+                                <span class="text-[10px] uppercase tracking-[0.25em] text-gold font-semibold mb-2 block">02 / Extremity Restoration</span>
+                                <h3 class="service-card-title font-serif text-3xl sm:text-4xl text-ink leading-tight">Hand Paraffin &amp; Foot Hot stone</h3>
+                                <div class="mt-2 inline-flex items-center gap-2 rounded-full bg-gold/15 px-3 py-1 text-xs uppercase tracking-widest text-gold font-medium">+25 min</div>
+                            </div>
+                            <div class="shrink-0 text-right">
+                                <span class="price-tag font-serif text-4xl sm:text-5xl font-normal text-gold">$60.00</span>
+                            </div>
+                        </div>
+                        <div class="section-divider mx-0 my-6"></div>
+                        <p class="text-sm sm:text-base text-ink-light font-light leading-relaxed">
+                            Hands are cocooned in a warm vitamin paraffin mask, then massaged into deep softness. While you relax, feet soak in a mineral Epsom salt bath followed by a soothing massage with smoothed volcanic hot stones.
+                        </p>
+                    </article>
+                </div>
+
+                <div class="flex flex-col sm:flex-row gap-5 justify-center items-center gs-reveal pt-8">
+                    <a href="https://m.me/100083612200839" target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center gap-2.5 rounded-full border border-gold/50 px-8 py-4 text-xs uppercase tracking-[0.2em] font-medium text-ink hover:bg-gold hover:text-ink transition-all hover-trigger">
+                        <svg class="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24" aria-hidden="true"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+                        <span>Free Consultation on Facebook</span>
+                    </a>
+                    <a href="https://www.fresha.com/en-GB/a/haus-head-spa-boca-raton-10075-yamato-road-ste-1-eu8gwt1l/all-offer?menu=true&amp;share=true&amp;pId=1228535" target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center rounded-full bg-gold text-ink px-9 py-4 text-xs uppercase tracking-[0.2em] font-medium hover:bg-gold-light transition-all shadow-md hover-trigger">Book Now on Fresha →</a>
                 </div>
             </div>
         </section>
@@ -1180,119 +1311,6 @@
                         <img src="https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?q=80&w=1000&auto=format&fit=crop" alt="Brow Wax" class="service-hover-img">
                     </div>
 
-                </div>
-            </div>
-        </section>
-
-        <section id="add-ons" class="py-32 md:py-48 bg-sand-100 relative overflow-hidden">
-            <div class="max-w-7xl mx-auto px-6 md:px-12 lg:px-24">
-                
-                <div class="flex flex-col md:flex-row justify-between items-start md:items-end mb-20 border-b border-ink/10 pb-8 gs-reveal">
-                    <div>
-                        <div class="flex items-center gap-3 mb-3">
-                            <span class="h-[1px] w-8 bg-gold"></span>
-                            <span class="text-xs tracking-[0.25em] uppercase text-gold font-medium">Enhance Your Journey</span>
-                        </div>
-                        <h2 class="font-serif text-5xl sm:text-7xl lg:text-8xl text-ink leading-tight">Curated <span class="italic text-gold">Add-ons</span></h2>
-                    </div>
-                    <p class="text-xs tracking-[0.2em] uppercase text-ink-light mt-4 md:mt-0 max-w-xs text-right hidden md:block">Targeted therapies to enrich your head spa ritual</p>
-                </div>
-
-                <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start mb-16">
-                    
-                    <article class="lg:col-span-6 service-card p-8 sm:p-12 rounded-[2.5rem] relative overflow-hidden gs-reveal hover-trigger border border-gold/30 shadow-lg">
-                        <div class="flex items-start justify-between gap-4 mb-6">
-                            <div>
-                                <span class="text-[10px] uppercase tracking-[0.25em] text-gold font-semibold mb-2 block">01 / Heated Therapy</span>
-                                <h3 class="service-card-title font-serif text-3xl sm:text-4xl text-ink leading-tight">Neck &amp; Shoulder Hot Stone Massage</h3>
-                                <div class="mt-2 inline-flex items-center gap-2 rounded-full bg-gold/15 px-3 py-1 text-xs uppercase tracking-widest text-gold font-medium">+20 min</div>
-                            </div>
-                            <div class="shrink-0 text-right">
-                                <span class="price-tag font-serif text-4xl sm:text-5xl font-normal text-gold">$50.00</span>
-                            </div>
-                        </div>
-                        <div class="section-divider mx-0 my-6"></div>
-                        <p class="text-sm sm:text-base text-ink-light font-light leading-relaxed">
-                            A targeted massage that uses warm basalt stones to melt deep tension in the neck and shoulders. The soothing mineral heat eases tight muscles, dramatically improves local circulation, and delivers deep, relaxing relief in minutes.
-                        </p>
-                    </article>
-
-                    <article class="lg:col-span-6 lg:mt-16 service-card p-8 sm:p-12 rounded-[2.5rem] relative overflow-hidden gs-reveal hover-trigger border border-ink/10 shadow-lg">
-                        <div class="flex items-start justify-between gap-4 mb-6">
-                            <div>
-                                <span class="text-[10px] uppercase tracking-[0.25em] text-gold font-semibold mb-2 block">02 / Extremity Restoration</span>
-                                <h3 class="service-card-title font-serif text-3xl sm:text-4xl text-ink leading-tight">Hand Paraffin &amp; Foot Hot stone</h3>
-                                <div class="mt-2 inline-flex items-center gap-2 rounded-full bg-gold/15 px-3 py-1 text-xs uppercase tracking-widest text-gold font-medium">+25 min</div>
-                            </div>
-                            <div class="shrink-0 text-right">
-                                <span class="price-tag font-serif text-4xl sm:text-5xl font-normal text-gold">$60.00</span>
-                            </div>
-                        </div>
-                        <div class="section-divider mx-0 my-6"></div>
-                        <p class="text-sm sm:text-base text-ink-light font-light leading-relaxed">
-                            Hands are cocooned in a warm vitamin paraffin mask, then massaged into deep softness. While you relax, feet soak in a mineral Epsom salt bath followed by a soothing massage with smoothed volcanic hot stones.
-                        </p>
-                    </article>
-                </div>
-
-                <div class="flex flex-col sm:flex-row gap-5 justify-center items-center gs-reveal pt-8">
-                    <a href="https://m.me/100083612200839" target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center gap-2.5 rounded-full border border-gold/50 px-8 py-4 text-xs uppercase tracking-[0.2em] font-medium text-ink hover:bg-gold hover:text-ink transition-all hover-trigger">
-                        <svg class="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24" aria-hidden="true"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
-                        <span>Free Consultation on Facebook</span>
-                    </a>
-                    <a href="https://www.fresha.com/en-GB/a/haus-head-spa-boca-raton-10075-yamato-road-ste-1-eu8gwt1l/all-offer?menu=true&amp;share=true&amp;pId=1228535" target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center rounded-full bg-gold text-ink px-9 py-4 text-xs uppercase tracking-[0.2em] font-medium hover:bg-gold-light transition-all shadow-md hover-trigger">Book Now on Fresha →</a>
-                </div>
-            </div>
-        </section>
-
-        <section id="offer" class="py-32 md:py-48 bg-sand-200 relative overflow-hidden">
-            <div class="max-w-7xl mx-auto px-6 md:px-12 lg:px-24">
-                <div class="relative overflow-hidden rounded-[3rem] bg-ink text-sand-100 p-8 sm:p-14 lg:p-20 shadow-2xl border border-gold/40 gs-reveal">
-                    
-                    <div class="absolute -top-32 -left-32 w-[500px] h-[500px] rounded-full bg-gold/10 blur-3xl pointer-events-none"></div>
-
-                    <div class="grid lg:grid-cols-12 gap-12 lg:gap-16 items-center relative z-10">
-                        <div class="lg:col-span-7">
-                            <div class="inline-flex items-center gap-2 rounded-full border border-gold/50 bg-gold/15 px-4 py-1.5 text-xs uppercase tracking-[0.25em] text-gold font-medium mb-6">
-                                ✦ Welcome Privilege ✦
-                            </div>
-                            <h2 class="font-serif text-4xl sm:text-6xl lg:text-7xl text-sand-100 leading-[1.05] mb-6">
-                                First-time guests, <br><span class="italic text-gold">15% OFF.</span>
-                            </h2>
-                            <p class="text-sand-300 font-light text-base sm:text-lg leading-relaxed max-w-xl mb-8">
-                                Message us on Facebook and mention the code <span class="font-semibold text-gold tracking-wider">“First Client”</span> to claim your special welcome offer — a serene introduction to the Haus way of scalp wellness.
-                            </p>
-
-                            <div class="mb-8 inline-flex items-center gap-6 rounded-2xl border border-dashed border-gold/60 bg-white/5 px-6 py-4">
-                                <div>
-                                    <span class="text-[10px] uppercase tracking-[0.25em] text-sand-300/70 block mb-0.5">Promo Code</span>
-                                    <span class="font-serif text-2xl sm:text-3xl text-gold font-normal tracking-wide">First Client</span>
-                                </div>
-                                <span class="h-8 w-[1px] bg-white/10"></span>
-                                <span class="text-xs text-sand-300/80 uppercase tracking-widest font-light">15% Off First Visit</span>
-                            </div>
-
-                            <div class="flex flex-col sm:flex-row gap-4">
-                                <a href="https://m.me/100083612200839" target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center gap-2 rounded-full bg-gold text-ink px-8 py-4 text-xs uppercase tracking-[0.2em] font-medium hover:bg-gold-light transition-all hover-trigger shadow-lg">
-                                    Message Us to Claim 15% OFF →
-                                </a>
-                                <a href="https://www.fresha.com/en-GB/a/haus-head-spa-boca-raton-10075-yamato-road-ste-1-eu8gwt1l/all-offer?menu=true&amp;share=true&amp;pId=1228535" target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center rounded-full border border-white/20 text-sand-100 px-8 py-4 text-xs uppercase tracking-[0.2em] font-medium hover:border-gold hover:text-gold transition-colors hover-trigger">
-                                    Book on Fresha
-                                </a>
-                            </div>
-                        </div>
-
-                        <div class="lg:col-span-5 relative">
-                            <div class="relative aspect-[4/5] overflow-hidden rounded-[2.5rem] ring-1 ring-gold/40 shadow-2xl bg-sand-100">
-                                <img alt="Haus Head Spa - Relax Restore Glow" class="w-full h-full object-cover" src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/1%20%282%29-L588Y50HIAUcAN8o8ZU3KgRoIi7DoU.png">
-                            </div>
-                            
-                            <div class="absolute -bottom-6 -left-6 h-24 w-24 rounded-full bg-gold text-ink flex flex-col items-center justify-center shadow-2xl p-2 text-center ring-4 ring-ink">
-                                <span class="font-serif text-xl font-bold leading-none">15%</span>
-                                <span class="text-[8px] uppercase tracking-widest font-semibold mt-0.5">Welcome</span>
-                            </div>
-                        </div>
-                    </div>
                 </div>
             </div>
         </section>
@@ -1698,7 +1716,6 @@
                         <li><a href="#facials" class="hover:text-gold transition-colors">Facial Treatments</a></li>
                         <li><a href="#permanent-makeup" class="hover:text-gold transition-colors">Permanent Makeup</a></li>
                         <li><a href="#add-ons" class="hover:text-gold transition-colors">Add-on Services</a></li>
-                        <li><a href="#offer" class="hover:text-gold transition-colors">15% Welcome Offer</a></li>
                         <li><a href="#gallery" class="hover:text-gold transition-colors">Gallery &amp; Reviews</a></li>
                         <li><button type="button" class="privacy-trigger text-left hover:text-gold transition-colors hover-trigger">Privacy Policy</button></li>
                     </ul>
@@ -1714,8 +1731,8 @@
             </div>
         </footer>
 
-        <div id="privacy-modal" class="fixed inset-0 z-[9999] flex items-center justify-center p-4 sm:p-6 bg-ink/80 backdrop-blur-md opacity-0 pointer-events-none transition-all duration-300" role="dialog" aria-modal="true" aria-labelledby="privacy-title">
-            <div class="relative w-full max-w-2xl max-h-[90vh] overflow-y-auto bg-ink border border-gold/40 rounded-3xl p-6 sm:p-10 text-sand-100 shadow-2xl scale-95 transition-all duration-300 transform" id="privacy-modal-content">
+        <div id="privacy-modal" class="fixed inset-0 z-[9999] flex items-center justify-center p-4 sm:p-6 bg-ink/80 backdrop-blur-md opacity-0 pointer-events-none transition-all duration-300" role="dialog" aria-modal="true" aria-labelledby="privacy-title" data-lenis-prevent>
+            <div class="relative w-full max-w-2xl max-h-[85vh] sm:max-h-[90vh] overflow-y-auto overscroll-contain bg-ink border border-gold/40 rounded-3xl p-6 sm:p-10 text-sand-100 shadow-2xl scale-95 transition-all duration-300 transform touch-pan-y" id="privacy-modal-content" data-lenis-prevent style="-webkit-overflow-scrolling: touch;">
                 
                 <button type="button" id="close-privacy-btn" aria-label="Close Privacy Policy" class="absolute top-6 right-6 h-10 w-10 rounded-full border border-white/20 flex items-center justify-center text-sand-300 hover:text-gold hover:border-gold transition-colors text-lg hover-trigger">
                     ✕
@@ -1792,8 +1809,7 @@
                 const target = document.querySelector(href);
                 if (target) {
                     e.preventDefault();
-                    const y = target.getBoundingClientRect().top + lenis.scroll;
-                    lenis.scrollTo(y, { duration: scrollDuration(y), easing: easeInOutCubic });
+                    lenis.scrollTo(target, { immediate: true });
                 }
             });
         });
@@ -1990,7 +2006,7 @@
         });
 
         const navLinks = document.querySelectorAll('.nav-link');
-        const sectionIds = ['about', 'head-spa', 'facials', 'permanent-makeup', 'lash-brows', 'add-ons', 'offer', 'gallery', 'contact'];
+        const sectionIds = ['about', 'head-spa', 'add-ons', 'facials', 'permanent-makeup', 'lash-brows', 'gallery', 'contact'];
 
         const navObserver = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
