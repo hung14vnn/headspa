@@ -1,0 +1,9 @@
+# Robots.txt for Haus Head Spa (Boca Raton, FL)
+# https://hausheadspa.com/
+
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://hausheadspa.com/sitemap.xml
+
